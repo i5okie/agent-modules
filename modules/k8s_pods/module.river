@@ -10,6 +10,12 @@ argument "forward_logs_to" {
 	optional = false
 }
 
+argument "namespaces" {
+  // comment = "List of namespaces to collect events from"
+  optional = true
+  default = []
+}
+
 // scrape_interval is a duration which specifies how frequently to collect
 // metrics.
 argument "scrape_interval" {
@@ -26,6 +32,9 @@ argument "scrape_timeout" {
 
 discovery.kubernetes "pods" {
 	role = "pod"
+	namespaces {
+		names = argument.namespaces.value
+	}
 }
 
 discovery.relabel "pods" {
